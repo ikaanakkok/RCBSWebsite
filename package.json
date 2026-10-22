@@ -6,15 +6,23 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "admin": "node scripts/admin.mjs",
-    "check": "astro check"
+    "admin": "node scripts/server.mjs",
+    "check": "astro check",
+    "start": "node scripts/server.mjs",
+    "admin:setup": "node scripts/setup-admin.mjs",
+    "test": "node --test test/*.test.mjs"
   },
   "dependencies": {
-    "astro": "^7.3.5"
+    "astro": "^7.3.5",
+    "decap-server": "^3.11.5",
+    "express": "^4.22.3",
+    "js-yaml": "^5.5.0"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.11",
-    "decap-server": "3.11.5",
     "typescript": "^6.0.3"
+  },
+  "engines": {
+    "node": ">=22.16.0"
   }
 }

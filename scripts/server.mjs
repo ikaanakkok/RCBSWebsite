@@ -1,0 +1,12 @@
+import fs from 'node:fs';
+import {fileURLToPath} from 'node:url';
+import {createApp} from '../server/app.mjs';
+const root = fileURLToPath(new URL('../', import.meta.url));
+const envFile = fileURLToPath(new URL('../.env', import.meta.url));
+if(fs.existsSync(envFile))process.loadEnvFile(envFile);
+const app = await createApp({root, username:process.env.ADMIN_USERNAME, password:process.env.ADMIN_PASSWORD, origin:process.env.SITE_ORIGIN});
+const port = Number(process.env.PORT ?? 3000);
+const host = process.env.HOST ?? '127.0.0.1';
+const server = app.listen(port,host,()=>console.log(`Business Society server ready on port ${port}.`));
+server.requestTimeout = 60_000;
+for(const signal of ['SIGTERM','SIGINT'])process.on(signal,()=>server.close());

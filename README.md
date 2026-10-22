@@ -1,93 +1,77 @@
 # Robert College Business Society
 
-Astro tabanlı, Türkçe ve İngilizce bir kulüp sitesi. Tasarım referansı: https://rcds.robcol.k12.tr/. Koyu arka plan, üstte logo ve menü, ana sayfada büyük görsel ve kayan kulüp adı; iç sayfalarda ortalanmış başlıklar korunur.
+Astro ile üretilen TR/EN kulüp sitesi ve Node.js üzerinde çalışan şifreli içerik yönetimi. Ana sayfalar: Home, About, Newsletter, Blog, Contact.
 
-Ana menü: **Home, About, Newsletter, Blog, Contact** (Türkçe sayfalarda Türkçe adlarıyla). Community Outreach bölümü yoktur.
+## Yerel çalıştırma
 
-## Çalıştırma
-
-```bash
-npm install
-npm run dev       # http://localhost:4321
-npm run check     # Astro ve TypeScript kontrolü
-npm run build     # Statik yayın dosyaları: dist/
-```
-
-## Metin, fotoğraf ve yazı düzenleme
-
-İki terminal açın:
+Node.js 22.16 veya üzeri gerekir.
 
 ```bash
-npm run dev
+npm ci
+npm run admin:setup   # İlk sefer: .env oluşturur, rastgele güçlü şifre üretir.
+npm run build
+npm start            # http://localhost:3000
 ```
+
+Yönetim: **http://localhost:3000/admin123/**. Kullanıcı adı ve şifre bilgisayarınızdaki `.env` dosyasındadır. Kurulum komutu mevcut dosyayı ezmez. Şifreyi terminale yazdırmaz. Dosya yalnızca sahibinin okuyup yazabileceği izinle oluşturulur ve Git tarafından dışlanır. `.env.example` gizli değer içermeyen şablondur.
+
+`npm run admin` aynı korumalı sunucuyu başlatır. Eski, şifresiz 8081 proxy sunucusu artık kullanılmaz; daha önce açtıysanız durdurun. Ön yüz üzerinde geliştirme için `npm run dev` kullanılabilir; bu Astro geliştirme sunucusunda içerik paneli bulunmaz. Astro dev/preview sunucusunu internete açmayın. Şifreli panel için yukarıdaki Node sunucusunu kullanın.
+
+## Yönetici girişi
+
+- Şifre tarayıcıya gönderilmez; sunucuda scrypt ile doğrulanır.
+- Oturum çerezi HttpOnly ve SameSite=Strict kullanır; HTTPS ortamında Secure olarak verilir.
+- Oturumlar 30 dakika sonra sona erer. Çıkış yapmak veya sunucuyu yeniden başlatmak oturumu iptal eder.
+- Aynı IP üzerinden beş başarısız giriş denemesinden sonra 15 dakika beklenir. Sayaçlar bellektedir; yeniden başlatmada sıfırlanır. Reverse proxy arkasındaki istekler ortak sınıra tabi olur. İstemcinin gönderdiği forwarded-IP başlıkları güvenilir kabul edilmez.
+- Panel HTML’i, yapılandırma, içerik okuma/yazma ve yükleme API’si oturum denetiminden geçer. Eski `/admin` adresi 404 döner.
+- API yalnızca tanımlanmış sayfa JSON dosyalarını, blog/newsletter Markdown dosyalarını ve izin verilen medya uzantılarını işler. Ortam dosyaları, sunucu kodu ve Git dosyaları bu API ile okunamaz veya değiştirilemez.
+- Durum değiştiren isteklerde yapılandırılmış site origin’i kontrol edilir. API herkese açık CORS izni vermez.
+
+Yönetim adresini bilmemek bir güvenlik kontrolü değildir. Adres kaynak kodunda görülebilir; korumayı oturum doğrulaması sağlar. Bu kontroller sıfır güvenlik açığı garantisi değildir; işletim sistemi, reverse proxy, HTTPS, bağımlılıklar ve yedekler de bakım gerektirir.
+
+## Okul sunucusunda yayın
+
+Bu sürümde **yalnızca dist klasörünü statik sunucuya kopyalamak şifreli paneli çalıştırmaz**. Sunucuda kaynak proje, Node.js ve yazılabilir içerik klasörleri bulunmalıdır.
+
+1. GitHub’dan projeyi alın; `npm ci` ve `npm run build` çalıştırın.
+2. Sunucuda ayrı bir `.env` oluşturun. Bilgisayardaki şifreyi paylaşmak yerine sunucu için yeni güçlü bir şifre belirleyin.
+3. `SITE_ORIGIN` değerini gerçek HTTPS alan adına ayarlayın; sonunda `/` olmamalıdır. Yerel olmayan HTTP origin’leri reddedilir.
+4. Node sürecini bir servis yöneticisiyle çalıştırın. `HOST=127.0.0.1` ve `PORT=3000` varsayılanları, aynı makinedeki HTTPS reverse proxy arkasında kullanılmak içindir. Reverse proxy site isteklerini bu Node sunucusuna iletmelidir.
+5. Dış erişimde sadece HTTPS reverse proxy’yi açın. Geliştirme sunucusunu veya eski Decap proxy’sini internete açmayın. Sunucu hesabına yalnızca gerekli proje/içerik izinlerini verin.
+6. `.env` dosyasını web köküne, e-postaya, GitHub’a veya yayın arşivine koymayın. İçerik ve medya dosyalarını yedekleyin.
+
+`SITE_ORIGIN`, tarayıcıda kullanılan origin ile aynı olmalıdır. Yerelde `localhost:3000` için oluşturulan ayarla `127.0.0.1:3000` üzerinden giriş yapmak reddedilir.
+
+## İçerik düzenleme ve yayına yansıtma
+
+Panelden önce yönetici hesabıyla giriş yapın. Decap daha sonra kendi bağlantı ekranını gösterirse **Giriş** düğmesiyle içerik düzenleyicisini açın; bu düğmeye ulaşmak için önce sunucudaki şifre doğrulaması tamamlanmış olur.
+
+- Sayfa metinleri ve fotoğrafları: beş sayfanın TR/EN alanları.
+- Kulüp bilgileri: logo, yönetim kurulu, fotoğraflar, sosyal bağlantılar ve iletişim.
+- Blog: mevcut ve yeni yazılar, kapak fotoğrafı, kategori, tarih ve yazar.
+- Newsletter: dönemlik PDF sayıları ve isteğe bağlı kapak görselleri. Taslaklar sitede görünmez.
+
+**Panelde kaydetmek sunucudaki kaynak dosyalarını değiştirir. GitHub’a otomatik commit/push veya otomatik yayın yapmaz.** Yayındaki statik sayfalara yansıtmak için `npm run build` çalıştırılmalıdır. Bu yayın adımını hocanızın yönetiminde yapın; bu sürümde otomatik deploy kurulmadı. Sunucuda değişmiş içerik dosyalarını GitHub’daki güncellemeyle ezerken kaybetmeyin; önce yedekleyin/senkronize edin.
+
+Medya `public/uploads/` içinde tutulur ve yayımlanan dosyalar doğrudan bağlantıyla herkese açık olabilir. Taslak ayarı bir dosya gizlilik kontrolü değildir; gizli belge yüklemeyin. PDF, JPG, PNG, WebP, GIF, AVIF ve HEIC uzantıları kabul edilir. Tarayıcıda gösterim için HEIC yerine JPG/PNG kullanın. HTML/JS/SVG yüklemeleri kabul edilmez.
+
+Mevcut blog dosyaları `src/content/magazine/` içinde korunur ve `/tr/blog/` veya `/en/blog/` altında yayımlanır. Newsletter örneği `src/content/newsletter/README.md` içindedir. Gerçek e-posta ve sosyal hesapları panelden ekleyebilirsiniz.
+
+## Kontroller
 
 ```bash
-npm run admin
-```
-
-`http://localhost:4321/admin/` adresini açın ve yerel panele giriş yapın. Yerel panel bilgisayarınızdaki dosyaları değiştirir. Panele erişim localhost ile sınırlandırılmıştır; internete açmayın. Yerel değişiklikler otomatik olarak internette yayımlanmaz.
-
-Panelde:
-
-- **Sayfa metinleri ve fotoğrafları → Home**: toplu fotoğraf, fotoğrafın kırpma odağı, kayan başlık, giriş paragrafları ve buton.
-- **About**: metinler, ana fotoğraf/logo ve fotoğraf albümü.
-- **Newsletter sayfası**: giriş metinleri ve isteğe bağlı sayfa fotoğrafı.
-- **Blog sayfası**: giriş metni, sayfa fotoğrafı ve bağlantı metinleri.
-- **Contact**: başlıklar, açıklama ve isteğe bağlı sayfa fotoğrafı.
-- **Kulüp bilgileri ve logo**: kulüp adı, logo, e-posta, sosyal hesaplar, adres, harita ve yönetim kurulu fotoğrafları.
-- **Blog yazıları (TR/EN)**: yeni yazı ekleme, kapak fotoğrafı, kategori, yazar, tarih ve Markdown içerik.
-- **Newsletter sayıları (TR/EN)**: sayı başlığı, tarih, açıklama, PDF ve isteğe bağlı kapak fotoğrafı.
-
-TR ve EN içerikleri ayrı ayrı düzenlenir. Yüklenen fotoğrafı iki dilde de kullanmak için her iki alanı da aynı fotoğrafa ayarlayın. Fotoğraflar ve PDF’ler `public/uploads/` içinde saklanır. Panelde **Taslak** açık olan blog yazıları ve newsletter sayıları yayımlanmış sayfalara dahil edilmez. Bu bir erişim kontrolü değildir: `public/uploads/` altındaki dosyalar doğrudan bağlantıyla erişilebilir. Gizli dosya yüklemeyin.
-
-Toplu fotoğraf henüz eklenmediği için ana sayfa mevcut Business Society logosunu gösterir. Fotoğraf geldiğinde Home içindeki **Ana sayfa toplu fotoğrafı** alanına yükleyin. En az 1600 piksel genişliğinde yatay fotoğraf önerilir; odak noktasını üst/orta/alt olarak seçebilirsiniz.
-
-Gerçek iletişim adresleri önceki projede yer tutucuydu. E-posta ve sosyal hesaplar bu yüzden şimdilik boş; panelde girildiğinde üst menüde, alt bilgide ve Contact sayfasında görünür. Örnek yönetim kurulu adları sitede gösterilmez; gerçek isimleri panelde girin.
-
-## Blog yazıları
-
-Mevcut yazılar korunur; dosyalar hâlâ `src/content/magazine/tr/` ve `src/content/magazine/en/` altındadır. Sitedeki adresleri `/tr/blog/yazi-adi/` ve `/en/blog/article-name/` şeklindedir. Eski `/magazine/` adresleri yeni Blog adreslerine yönlenir. Önceki Markets ve Network adresleri About sayfasına yönlenir.
-
-```yaml
----
-title: "Yazının başlığı"
-author: "Yazarın adı"
-date: 2026-10-21
-category: Girişimcilik
-excerpt: "Yazının kısa özeti."
-cover: /uploads/kapak.jpg
-coverAlt: "Kapak fotoğrafının açıklaması"
-translationKey: ortak-ceviri-anahtari
-draft: false
----
-```
-
-Altına yazıyı Markdown olarak yazın. `cover` ve `translationKey` isteğe bağlıdır. TR ve EN çevirilerinde aynı `translationKey` kullanıldığında dil değiştirici doğrudan çeviriyi açar; çeviri yoksa diğer dildeki Blog listesine gider.
-
-Projede bulunan **Örnek Yazar / Sample Author** yazıları gösterim içindir; panelden düzenleyebilir veya silebilirsiniz.
-
-## Newsletter
-
-Newsletter, referans sitedeki gibi dönemlik PDF arşividir. Panelden bir sayı oluşturun ve PDF yükleyin. E-posta aboneliği veya otomatik e-posta gönderimi içermez. Henüz gerçek sayı eklenmediği için arşivde hazırlık mesajı görünür. Panelde her dil için bir başlangıç taslağı vardır; PDF ekleyip Taslak alanını kapatarak ilk sayınızı yayımlayabilirsiniz. Taslakta PDF boş kalabilir; yayımlanan bir sayıda boşsa derleme açıklayıcı hata verir. Elle dosya eklemek için `src/content/newsletter/README.md` içindeki örneği kullanın.
-
-## Yayına alma
-
-```bash
+npm test
 npm run check
 npm run build
 ```
 
-`dist/` klasörünü bir statik site sağlayıcısında yayımlayabilirsiniz. `astro.config.mjs` içindeki alan adı henüz doğrulanmış bir yayın adresi değildir; gerçek alan adı belli olduğunda güncelleyin. Statik yönlendirmeler HTML meta refresh olarak üretilir; HTTP 301 için sağlayıcınızda yönlendirme kuralları kullanın.
+Oturumsuz erişim, yanlış şifre, giriş limiti, oturum süresi, çıkış, origin kontrolü, cookie bayrakları ve dosya erişim sınırları entegrasyon testleriyle kontrol edilir. Bağımlılık denetiminde Decap CLI’nin Joi bağımlılığından gelen düşük önem dereceli bildirimler bulunmaktadır; sürüm yükseltmelerini ayrıca takip edin.
 
-**Yayındaki admin paneli henüz yapılandırılmadı.** `public/admin/config.yml` içindeki `backend.repo` alanına gerçek GitHub reposunu girin ve yayın sağlayıcınızda Decap/GitHub OAuth bağlantısını yapılandırın. Yerel panel bu bağlantı kurulmadan çalışır. Yayın ortamında yerel Decap sunucusu çalıştırılmaz.
+## Dosyalar
 
-## Dosya düzeni
-
-- `src/layouts/Base.astro`: ortak üst menü ve alt bilgi.
-- `src/styles/global.css`: renkler, yazı tipleri ve ortak stiller.
-- `src/data/pages/*.json`: beş sayfanın TR/EN metinleri ve fotoğrafları.
-- `src/data/site.json`: logo, kulüp ve iletişim bilgileri.
-- `src/content/magazine/`: mevcut ve yeni blog yazıları.
-- `src/content/newsletter/`: newsletter sayıları.
-- `public/admin/config.yml`: düzenleme panelinin alanları.
-- `public/uploads/`: yüklenen fotoğraf ve PDF dosyaları.
+- `server/app.mjs`: şifre doğrulama, oturumlar, korumalı içerik API’si ve yayın dosyalarının sunumu.
+- `server/admin.html`, `server/cms.yml`: herkese açık statik klasör dışında tutulan panel ve yapılandırması.
+- `scripts/server.mjs`, `scripts/setup-admin.mjs`: sunucu ve yerel hesap kurulumu.
+- `src/data/pages/`, `src/data/site.json`: düzenlenebilir sayfa ve kulüp içerikleri.
+- `src/content/magazine/`, `src/content/newsletter/`: blog ve newsletter kaynakları.
+- `public/uploads/`: medya dosyaları.

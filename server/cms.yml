@@ -1,10 +1,4 @@
-# Local: npm run dev + npm run admin, then /admin/.
-# For a hosted editor, replace repo and configure GitHub OAuth on your host.
-backend:
-  name: github
-  repo: KULLANICI_ADI/rcbs-website
-  branch: main
-local_backend: true
+# Served only after authentication. Backend URL is supplied by the Node server.
 locale: tr
 media_folder: public/uploads
 public_folder: /uploads
