@@ -1,0 +1,44 @@
+{
+  "tr": {
+    "title": "Hakkımızda",
+    "kicker": "Est. 1963",
+    "intro": "İş dünyasını sınıfın dışına taşıyan bir öğrenci topluluğuyuz.",
+    "storyTitle": "Hikayemiz",
+    "story": "Business Society, Robert Kolej’de ekonomi, finans ve girişimcilik konularına ilgi duyan öğrencilerin kurduğu bir kulüptür.\n\nAmacımız; öğrencilerin piyasaları takip etmesini, fikirlerini yazıya dökmesini ve iş dünyasından insanlarla tanışmasını sağlamak.",
+    "missionTitle": "Misyonumuz",
+    "mission": [
+      "Merak etmek",
+      "Tartışmak",
+      "Yazmak",
+      "Bağlantı kurmak"
+    ],
+    "boardTitle": "Yönetim Kurulu",
+    "heading": "Robert Kolej Business Society",
+    "image": "/logo.png",
+    "imageAlt": "Robert Kolej Business Society logo",
+    "galleryTitle": "Business Society’den kareler",
+    "gallery": [],
+    "boardIntro": "Bu sayfada kulübümüzün yönetim ekibiyle tanışabilirsiniz."
+  },
+  "en": {
+    "title": "About",
+    "kicker": "Est. 1963",
+    "intro": "A student community taking business beyond the classroom.",
+    "storyTitle": "Our story",
+    "story": "Business Society is a Robert College club founded by students interested in economics, finance and entrepreneurship.\n\nOur goal is to help students follow the markets, put their ideas into writing and meet people from the business world.",
+    "missionTitle": "Our mission",
+    "mission": [
+      "Be curious",
+      "Debate",
+      "Write",
+      "Connect"
+    ],
+    "boardTitle": "Board",
+    "heading": "Robert College Business Society",
+    "image": "/logo.png",
+    "imageAlt": "Robert College Business Society logo",
+    "galleryTitle": "Life at Business Society",
+    "gallery": [],
+    "boardIntro": "Meet the students behind our society."
+  }
+}

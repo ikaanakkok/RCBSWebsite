@@ -1,0 +1,40 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import PageHeading from '../../components/PageHeading.astro';
+import Icon from '../../components/Icon.astro';
+import { langPaths, splitId, formatDate, type Lang } from '../../i18n/ui';
+import page from '../../data/pages/newsletter.json';
+export const getStaticPaths = langPaths;
+const lang = Astro.params.lang as Lang;
+const copy = page[lang];
+const issues = (await getCollection('newsletter', e => splitId(e.id).lang === lang && !e.data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+<Base lang={lang} title={copy.title} description={copy.intro}>
+  <PageHeading label={copy.title} heading={copy.heading} image={copy.image} imageAlt={copy.imageAlt} />
+  <section class="wrap newsletter">
+    <p>{copy.greeting}</p>
+    <p>{copy.intro}</p>
+    <p>{copy.archiveIntro}</p>
+    {issues.length === 0 ? <p class="empty">{copy.empty}</p> : <ul class="issues">
+      {issues.map(issue => <li>
+        {issue.data.cover && <img src={issue.data.cover} alt={issue.data.coverAlt} width="500" height="650" loading="lazy" />}
+        <a class="btn" href={issue.data.file} target="_blank" rel="noopener noreferrer" aria-label={`${issue.data.title}: ${copy.openLabel}`}><Icon name="pdf" />{issue.data.title}</a>
+        {issue.data.description && <p class="issue-description">{issue.data.description}</p>}
+        <time datetime={issue.data.date.toISOString()}>{formatDate(issue.data.date, lang)}</time>
+      </li>)}
+    </ul>}
+  </section>
+</Base>
+<style>
+  .newsletter { text-align: center; max-width: 1050px; }
+  .newsletter > p { margin-bottom: 1.5rem; }
+  .issues { display: grid; justify-content: center; list-style: none; padding: 0; margin: 1rem 0 0; gap: 1.5rem; }
+  .issues li { max-width: 650px; }
+  .issues img { max-height: 340px; width: auto; margin: 0 auto 1rem; }
+  .issues .btn { min-width: min(100%, 300px); }
+  .issue-description { margin: .7rem 0 0; }
+  .issues time { display: block; color: var(--muted); font-size: .9rem; margin-top: .5rem; }
+  .empty { max-width: 650px; margin-inline: auto; font-size: 1.05rem; }
+</style>

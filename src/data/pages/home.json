@@ -1,0 +1,38 @@
+{
+  "tr": {
+    "heroImage": "/uploads/img_3835.jpg",
+    "heroPosition": "center",
+    "ctaLabel": "Business Society’yi tanı",
+    "paragraphs": [
+      "Robert Kolej Business Society, ekonomi, finans ve girişimciliği merak eden öğrencileri bir araya getirir. Piyasaları takip eder, fikirlerimizi paylaşır ve iş dünyasını birlikte anlamaya çalışırız.",
+      "Haftalık buluşmalarımızda ekonomik gelişmeleri tartışır; konuk konuşmacılar, mezunlar ve farklı sınıflardan öğrencilerle yeni bakış açıları kazanırız. Bir soruyu birlikte düşünmek, bizim için en az cevabı bulmak kadar değerlidir.",
+      "Blogumuzda üyelerimizin yazılarını, newsletter arşivimizde ise kulüpten haberleri bulabilirsiniz. Merak ettiğimiz konuları yazıya döküyor, öğrendiklerimizi topluluğumuzla paylaşıyoruz."
+    ],
+    "heroImageAlt": "Robert Kolej Business Society",
+    "introLabel": "Kulüp Fotoğrafımız",
+    "motionPlayLabel": "Kayan yazıyı oynat",
+    "ctaLink": "about",
+    "tagline": "Robert College Business Society",
+    "motionPauseLabel": "Kayan yazıyı durdur",
+    "title": "Ana sayfa",
+    "heroTitle": "Robert Kolej Business Society"
+  },
+  "en": {
+    "heroImage": "",
+    "heroPosition": "center",
+    "ctaLabel": "Meet Business Society",
+    "paragraphs": [
+      "Robert College Business Society brings together students curious about economics, finance and entrepreneurship. We follow the markets, share our ideas and explore the world of business together.",
+      "In our weekly meetings, we discuss economic developments and exchange perspectives with guest speakers, alumni and students across every grade. Thinking through a question together matters just as much to us as finding an answer.",
+      "Our blog is a space for student writing, while our newsletter keeps our community connected to club life. We put the ideas we discuss into words and share what we learn along the way."
+    ],
+    "heroImageAlt": "Members of Robert College Business Society",
+    "introLabel": "Our shared curiosity",
+    "motionPlayLabel": "Play scrolling title",
+    "ctaLink": "about",
+    "tagline": "Taking business beyond the classroom.",
+    "motionPauseLabel": "Pause scrolling title",
+    "title": "Home",
+    "heroTitle": "Robert College Business Society"
+  }
+}

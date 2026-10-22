@@ -1,0 +1,98 @@
+---
+import '../styles/global.css';
+import { navItems, type Lang } from '../i18n/ui';
+import SocialLinks from '../components/SocialLinks.astro';
+import Icon from '../components/Icon.astro';
+import club from '../data/site.json';
+
+interface Props { lang: Lang; title?: string; description?: string; altHref?: string; }
+const { lang, title, description, altHref } = Astro.props;
+const other: Lang = lang === 'tr' ? 'en' : 'tr';
+const path = Astro.url.pathname;
+const switchHref = altHref ?? path.replace(/^\/(tr|en)/, `/${other}`);
+const siteName = club.name[lang];
+const pageTitle = title ? `${title} | ${siteName}` : siteName;
+const desc = description ?? club.description[lang];
+const nav = navItems(lang);
+const href = (slug: string) => `/${lang}/${slug}`;
+const isActive = (slug: string) => slug ? path.startsWith(href(slug)) : /^\/(tr|en)\/?$/.test(path);
+---
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={desc} />
+    <meta name="theme-color" content="#181818" />
+    <link rel="icon" type="image/png" href={club.logo} />
+    <link rel="alternate" hreflang={other} href={switchHref} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={desc} />
+    <meta property="og:image" content={club.logo} />
+  </head>
+  <body id="top">
+    <!-- The supplied logo has 46% opacity; restore contrast without changing the asset. -->
+    <svg width="0" height="0" aria-hidden="true" style="position:absolute;pointer-events:none">
+      <defs><filter id="logo-alpha" color-interpolation-filters="sRGB"><feComponentTransfer><feFuncA type="linear" slope="2.18" /></feComponentTransfer></filter></defs>
+    </svg>
+    <a class="skip" href="#main">{lang === 'tr' ? 'İçeriğe geç' : 'Skip to content'}</a>
+    <header class="masthead">
+      <div class="header-tools"><SocialLinks /><a class="language" href={switchHref} hreflang={other} lang={other} aria-label={lang === 'tr' ? 'Switch to English' : 'Türkçeye geç'}>{other.toUpperCase()}</a></div>
+      <div class="brand-row">
+        <a class="brand" href={`/${lang}/`}>
+          <img class:list={{ 'logo-inverted': club.invertLogo }} src={club.logo} alt="" width="108" height="94" />
+          <span>{siteName}</span>
+        </a>
+      </div>
+      <nav class="desktop-nav" aria-label={lang === 'tr' ? 'Ana menü' : 'Main navigation'}>
+        {nav.map(([slug, label]) => <a href={href(slug)} aria-current={isActive(slug) ? 'page' : undefined}>{label}</a>)}
+      </nav>
+      <details class="mobile-menu">
+        <summary>{lang === 'tr' ? 'Menü' : 'Menu'}<span aria-hidden="true">☰</span></summary>
+        <nav aria-label={lang === 'tr' ? 'Mobil menü' : 'Mobile navigation'}>
+          {nav.map(([slug, label]) => <a href={href(slug)} aria-current={isActive(slug) ? 'page' : undefined}>{label}</a>)}
+        </nav>
+      </details>
+    </header>
+    <main id="main" tabindex="-1"><slot /></main>
+    <footer class="footer">
+      <p>© {new Date().getFullYear()} {siteName}.</p>
+      <SocialLinks />
+    </footer>
+    <a class="back-top" href="#top" aria-label={lang === 'tr' ? 'Sayfanın başına dön' : 'Back to top'}><Icon name="up" /></a>
+  </body>
+</html>
+<style>
+  .skip { position: absolute; top: -100px; left: 1rem; z-index: 20; background: white; color: black; padding: .5rem 1rem; }
+  .skip:focus { top: 1rem; }
+  .masthead { position: relative; padding: 0 30px; }
+  .header-tools { height: 35px; display: flex; align-items: center; justify-content: flex-end; gap: 1.4rem; }
+  .language { font-size: .8rem; text-decoration: none; color: var(--muted); min-height: 30px; display: grid; place-items: center; }
+  .brand-row { min-height: 114px; display: flex; align-items: center; }
+  .brand { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; }
+  .brand img { width: 100px; height: 94px; object-fit: contain; }
+  .logo-inverted { filter: url(#logo-alpha) invert(1); mix-blend-mode: screen; }
+  .brand span { font-family: var(--font-display); font-size: 1.4rem; font-weight: 700; }
+  .desktop-nav { display: flex; align-items: center; justify-content: flex-end; gap: 2.2rem; min-height: 112px; }
+  .desktop-nav a { font-size: 1.05rem; text-transform: uppercase; text-decoration: none; padding-block: 1rem; }
+  a[aria-current='page'] { color: var(--accent); }
+  .mobile-menu { display: none; }
+  .footer { display: flex; align-items: center; justify-content: space-between; gap: 2rem; padding: 2rem 30px; margin-top: 5rem; min-height: 110px; }
+  .footer p { margin: 0; font-family: var(--font-display); font-size: .85rem; color: var(--muted); }
+  .back-top { position: fixed; right: 22px; bottom: 0; width: 44px; height: 34px; display: grid; place-items: center; background: #292929; border-radius: 3px 3px 0 0; color: #ddd; }
+  .back-top :global(svg) { width: 20px; height: 20px; }
+  @media (max-width: 760px) {
+    .masthead { padding-inline: 20px; }
+    .brand-row { min-height: 98px; padding-bottom: 10px; }
+    .brand img { width: 72px; height: 72px; }
+    .brand span { font-size: 1.05rem; max-width: 25ch; }
+    .desktop-nav { display: none; }
+    .mobile-menu { display: block; border-block: 1px solid var(--rule-soft); }
+    .mobile-menu summary { display: flex; align-items: center; justify-content: space-between; list-style: none; cursor: pointer; padding: .8rem 0; font-size: 1rem; }
+    .mobile-menu summary::-webkit-details-marker { display: none; }
+    .mobile-menu nav { display: grid; padding-bottom: 1rem; }
+    .mobile-menu a { padding: .7rem 0; text-decoration: none; }
+    .footer { padding: 2rem 20px; margin-top: 3rem; flex-wrap: wrap; }
+  }
+</style>

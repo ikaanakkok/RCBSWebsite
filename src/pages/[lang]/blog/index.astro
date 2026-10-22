@@ -1,0 +1,49 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import PageHeading from '../../../components/PageHeading.astro';
+import ArticleCard from '../../../components/ArticleCard.astro';
+import { langPaths, splitId, type Lang } from '../../../i18n/ui';
+import page from '../../../data/pages/blog.json';
+export const getStaticPaths = langPaths;
+const lang = Astro.params.lang as Lang;
+const copy = page[lang];
+const articles = (await getCollection('magazine', e => splitId(e.id).lang === lang && !e.data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const categories = [...new Set(articles.map(a => a.data.category))];
+---
+<Base lang={lang} title={copy.title} description={copy.intro}>
+  <PageHeading label={copy.title} heading={copy.heading} image={copy.image} imageAlt={copy.imageAlt} />
+  <section class="wrap blog-content">
+    <p class="blog-intro">{copy.intro}</p>
+    {categories.length > 1 && <div class="filters" role="group" aria-label={lang === 'tr' ? 'Kategoriye göre filtrele' : 'Filter by category'}>
+      <button type="button" data-filter="" aria-pressed="true">{copy.allLabel}</button>
+      {categories.map(category => <button type="button" data-filter={category} aria-pressed="false">{category}</button>)}
+    </div>}
+    <p class="sr-only" data-filter-status role="status" aria-live="polite" data-lang={lang}></p>
+    {articles.length === 0 ? <p class="empty">{copy.empty}</p> : <div class="blog-grid">{articles.map(article => <ArticleCard article={article} />)}</div>}
+  </section>
+</Base>
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
+  const cards = document.querySelectorAll<HTMLElement>('[data-blog-card]');
+  buttons.forEach(button => button.addEventListener('click', () => {
+    const filter = button.dataset.filter;
+    buttons.forEach(b => b.setAttribute('aria-pressed', String(b === button)));
+    let count = 0;
+    cards.forEach(card => {
+      card.hidden = Boolean(filter && card.dataset.category !== filter);
+      if (!card.hidden) count++;
+    });
+    const status = document.querySelector<HTMLElement>('[data-filter-status]');
+    if (status) status.textContent = status.dataset.lang === 'tr' ? `${count} yazı gösteriliyor.` : `${count} articles shown.`;
+  }));
+</script>
+<style>
+  .blog-intro { text-align: center; max-width: 750px; margin: 0 auto 2.5rem; }
+  .filters { display: flex; flex-wrap: wrap; justify-content: center; gap: .75rem; margin-bottom: 2.5rem; }
+  .filters button { border: 1px solid var(--rule); background: var(--surface); color: white; padding: .5rem 1.2rem; border-radius: 3px; cursor: pointer; font-size: 1rem; }
+  .filters button:hover, .filters button[aria-pressed='true'] { border-color: var(--accent); color: var(--accent); }
+  .blog-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 3rem; }
+  @media (max-width: 700px) { .blog-grid { grid-template-columns: 1fr; gap: .5rem; } }
+</style>

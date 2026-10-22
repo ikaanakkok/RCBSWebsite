@@ -1,0 +1,8 @@
+---
+import { getCollection } from 'astro:content';
+import { splitId } from '../../../i18n/ui';
+export async function getStaticPaths() {
+  return (await getCollection('magazine', e => !e.data.draft)).map(article => ({ params: splitId(article.id) }));
+}
+return Astro.redirect(`/${Astro.params.lang}/blog/${Astro.params.slug}/`, 301);
+---

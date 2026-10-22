@@ -1,0 +1,48 @@
+{
+  "tr": {
+    "title": "Network",
+    "kicker": "Bağlantı kur",
+    "intro": "Kulübün en değerli tarafı insanları. Business Society, öğrencilere iş dünyasında ilk bağlantılarını kurma fırsatı sunar.",
+    "perks": [
+      {
+        "title": "Konuk konuşmacılar",
+        "text": "Girişimciler, yatırımcılar ve yöneticilerle soru-cevap oturumları."
+      },
+      {
+        "title": "Mezun ağı",
+        "text": "İş dünyasındaki Robert Kolej mezunlarıyla tanışma ve mentorluk."
+      },
+      {
+        "title": "Okullar arası etkinlikler",
+        "text": "Diğer okulların business kulüpleriyle ortak etkinlikler ve yarışmalar."
+      },
+      {
+        "title": "Ekip içi dayanışma",
+        "text": "Farklı sınıflardan, aynı merakı paylaşan öğrencilerle çalışma."
+      }
+    ]
+  },
+  "en": {
+    "title": "Network",
+    "kicker": "Get connected",
+    "intro": "The club’s greatest asset is its people. Business Society gives students the chance to build their first connections in business.",
+    "perks": [
+      {
+        "title": "Guest speakers",
+        "text": "Q&A sessions with founders, investors and executives."
+      },
+      {
+        "title": "Alumni network",
+        "text": "Meet and get mentored by Robert College alumni in business."
+      },
+      {
+        "title": "Inter-school events",
+        "text": "Joint events and competitions with business clubs from other schools."
+      },
+      {
+        "title": "A team to grow with",
+        "text": "Work with students from every grade who share the same curiosity."
+      }
+    ]
+  }
+}

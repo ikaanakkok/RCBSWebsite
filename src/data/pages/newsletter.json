@@ -1,0 +1,24 @@
+{
+  "tr": {
+    "title": "Newsletter",
+    "heading": "Robert Kolej Business Society",
+    "image": "",
+    "imageAlt": "",
+    "greeting": "Sevgili üyelerimiz ve mezunlarımız,",
+    "intro": "Business Society’de olup bitenleri topluluğumuzla paylaşmak için newsletter hazırlıyoruz. Kulüp buluşmaları, konuşmacılar, üzerinde çalıştığımız fikirler ve öğrenci yazıları bu sayfalarda bir araya geliyor.",
+    "archiveIntro": "Yayımlanan sayılarımızı aşağıdaki arşivden okuyabilirsiniz.",
+    "empty": "İlk newsletter sayımız hazırlanıyor. Yayımlandığında burada bulabilirsiniz.",
+    "openLabel": "PDF’yi oku"
+  },
+  "en": {
+    "title": "Newsletter",
+    "heading": "Robert College Business Society",
+    "image": "",
+    "imageAlt": "",
+    "greeting": "Dear members and alumni,",
+    "intro": "Our newsletter keeps the Business Society community connected. It brings together club meetings, guest speakers, the ideas we are working on and the writing of our members.",
+    "archiveIntro": "You can read our published issues in the archive below.",
+    "empty": "Our first newsletter is in the works. You will find it here when it is published.",
+    "openLabel": "Read PDF"
+  }
+}

@@ -1,0 +1,17 @@
+---
+import club from '../data/site.json';
+import Icon from './Icon.astro';
+const links = [
+  { name: 'linkedin' as const, label: 'LinkedIn', href: club.linkedin },
+  { name: 'instagram' as const, label: 'Instagram', href: club.instagram },
+  { name: 'email' as const, label: 'Email', href: club.email ? `mailto:${club.email}` : '' },
+].filter(link => link.href);
+---
+{links.length > 0 && <div class="social-links">
+  {links.map(link => <a href={link.href} aria-label={link.label} target={link.name === 'email' ? undefined : '_blank'} rel={link.name === 'email' ? undefined : 'noopener noreferrer'}><Icon name={link.name} /></a>)}
+</div>}
+<style>
+  .social-links { display: flex; gap: 1.2rem; align-items: center; }
+  .social-links a { display: flex; align-items: center; justify-content: center; min-width: 24px; min-height: 30px; }
+  .social-links :global(svg) { width: 19px; height: 19px; }
+</style>

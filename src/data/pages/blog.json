@@ -1,0 +1,24 @@
+{
+  "tr": {
+    "title": "Blog",
+    "heading": "Robert Kolej Business Society",
+    "intro": "Ekonomi, piyasalar ve girişimcilik üzerine üyelerimizin kaleminden.",
+    "image": "",
+    "imageAlt": "",
+    "empty": "Henüz yayımlanmış bir yazı yok.",
+    "allLabel": "Tümü",
+    "backLabel": "Tüm yazılara dön",
+    "readMoreLabel": "Yazıyı oku"
+  },
+  "en": {
+    "title": "Blog",
+    "heading": "Robert College Business Society",
+    "intro": "Economics, markets and entrepreneurship, written by our members.",
+    "image": "",
+    "imageAlt": "",
+    "empty": "No articles have been published yet.",
+    "allLabel": "All",
+    "backLabel": "Back to all articles",
+    "readMoreLabel": "Read article"
+  }
+}

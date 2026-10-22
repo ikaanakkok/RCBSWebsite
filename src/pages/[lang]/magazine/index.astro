@@ -1,0 +1,5 @@
+---
+import { langPaths } from '../../../i18n/ui';
+export const getStaticPaths = langPaths;
+return Astro.redirect(`/${Astro.params.lang}/blog/`, 301);
+---

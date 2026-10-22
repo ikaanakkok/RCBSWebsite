@@ -1,0 +1,55 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHeading from '../../components/PageHeading.astro';
+import { langPaths, type Lang } from '../../i18n/ui';
+import club from '../../data/site.json';
+import page from '../../data/pages/about.json';
+export const getStaticPaths = langPaths;
+const lang = Astro.params.lang as Lang;
+const copy = page[lang];
+const board = club.board.filter(member => member.name && member.name !== 'Ad Soyad');
+---
+<Base lang={lang} title={copy.title} description={copy.intro}>
+  <PageHeading label={copy.title} heading={copy.heading} />
+  <section class="wrap about-story">
+    {copy.image && <div class="about-image"><img class:list={{'logo-image': copy.image === club.logo && club.invertLogo}} src={copy.image} alt={copy.imageAlt} width="560" height="500" /></div>}
+    <div class="prose">
+      <p class="lead">{copy.intro}</p>
+      <h2>{copy.storyTitle}</h2>
+      {copy.story.split(/\n\s*\n/).map(p => <p>{p}</p>)}
+      <h2>{copy.missionTitle}</h2>
+      <ul>{copy.mission.map(m => <li>{m}</li>)}</ul>
+    </div>
+  </section>
+  {board.length > 0 && <section class="wrap section" id="team">
+    <h2 class="section-title">{copy.boardTitle}</h2>
+    <p class="section-intro">{copy.boardIntro}</p>
+    <div class="board">{board.map(member => <article>
+      {member.photo && <img src={member.photo} alt={member.name} width="350" height="350" loading="lazy" />}
+      <h3>{member.name}</h3><p>{member.role[lang]}</p>
+    </article>)}</div>
+  </section>}
+  {copy.gallery.length > 0 && <section class="wrap section" id="photos">
+    <h2 class="section-title">{copy.galleryTitle}</h2>
+    <div class="gallery">{copy.gallery.map((photo: {image: string; alt: string; caption: string}) => <figure>
+      <img src={photo.image} alt={photo.alt} width="600" height="450" loading="lazy" />{photo.caption && <figcaption>{photo.caption}</figcaption>}
+    </figure>)}</div>
+  </section>}
+</Base>
+<style>
+  .about-story { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
+  .about-image img { width: 100%; object-fit: cover; }
+  .about-image .logo-image { filter: url(#logo-alpha) invert(1); mix-blend-mode: screen; }
+  .prose h2 { font-size: 1.5rem; margin: 1.5rem 0 1rem; }
+  .section-title, .section-intro { text-align: center; margin-bottom: 1.5rem; }
+  .board { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 2rem; margin-top: 2.5rem; }
+  .board img { aspect-ratio: 1; object-fit: cover; margin-bottom: 1rem; }
+  .board h3 { font-size: 1.3rem; }
+  .board p { color: var(--muted); margin-top: .3rem; }
+  .about-story:has(> .prose:first-child) { grid-template-columns: 1fr; max-width: 800px; }
+  @media (max-width: 760px) {
+    .about-story { grid-template-columns: 1fr; gap: 2rem; }
+    .about-image { max-width: 380px; margin-inline: auto; }
+    .board { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+</style>

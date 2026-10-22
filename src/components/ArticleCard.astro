@@ -1,0 +1,30 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { formatDate, splitId } from '../i18n/ui';
+import page from '../data/pages/blog.json';
+interface Props { article: CollectionEntry<'magazine'>; }
+const { article } = Astro.props;
+const { lang, slug } = splitId(article.id);
+const { title, author, date, category, excerpt, cover, coverAlt } = article.data;
+---
+<article class="card" data-blog-card data-category={category}>
+  <a class="card-link" href={`/${lang}/blog/${slug}/`}>
+    {cover && <img src={cover} alt={coverAlt} class="card-image" width="750" height="450" loading="lazy" />}
+    <p class="kicker">{category}</p>
+    <h2>{title}</h2>
+    <p class="card-excerpt">{excerpt}</p>
+    <p class="card-meta">{author}<span aria-hidden="true"> · </span><time datetime={date.toISOString()}>{formatDate(date, lang)}</time></p>
+    <span class="read-more">{page[lang].readMoreLabel}</span>
+  </a>
+</article>
+<style>
+  .card { min-width: 0; border-top: 1px solid var(--rule); }
+  .card-link { display: block; padding-block: 2rem; text-decoration: none; height: 100%; }
+  .card-link:hover { color: white; }
+  .card h2 { font-size: 1.65rem; margin: .4rem 0 1rem; overflow-wrap: anywhere; }
+  .card-link:hover h2 { color: var(--accent); }
+  .card-image { width: 100%; aspect-ratio: 5 / 3; object-fit: cover; margin-bottom: 1.5rem; }
+  .card-excerpt { color: #e0e0e0; margin: 0 0 1rem; }
+  .card-meta { color: var(--muted); font-size: .95rem; margin-bottom: 1.4rem; }
+  .read-more { display: inline-block; font-size: 1rem; text-decoration: underline; text-underline-offset: 4px; }
+</style>

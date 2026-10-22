@@ -1,0 +1,64 @@
+{
+  "marketTopics": [
+    "BIST 100",
+    "FED",
+    "S&P 500",
+    "XAU/USD",
+    "BRENT",
+    "USD/TRY",
+    "BTC",
+    "NVDA",
+    "CPI",
+    "TCMB"
+  ],
+  "invertLogo": true,
+  "founded": 1963,
+  "board": [
+    {
+      "name": "Ayşe Koç",
+      "role": {
+        "tr": "Başkan",
+        "en": "President"
+      },
+      "photo": "/uploads/ays.jpeg"
+    },
+    {
+      "name": "Çınar Aras",
+      "role": {
+        "tr": "Başkan Yardımcısı",
+        "en": "Vice President"
+      },
+      "photo": ""
+    },
+    {
+      "name": "İsmet Kaan Akkök",
+      "role": {
+        "tr": "Halkla İlişkiler",
+        "en": "Public Relations"
+      },
+      "photo": "/uploads/1791910786124.png"
+    },
+    {
+      "name": "Ali Erdem Yılmaz",
+      "role": {
+        "tr": "Etkinlik Koordinatörü",
+        "en": "Chie Coordinator"
+      },
+      "photo": ""
+    }
+  ],
+  "logo": "/logo.png",
+  "name": {
+    "tr": "Robert Kolej Business Society",
+    "en": "Robert College Business Society"
+  },
+  "mapEmbedUrl": "https://maps.google.com/maps?q=Robert%20College%20Istanbul&t=&z=15&ie=UTF8&iwloc=&output=embed",
+  "instagram": "",
+  "address": "Robert College, Kuruçeşme Cd. No:87, Arnavutköy, Beşiktaş / İstanbul",
+  "email": "",
+  "description": {
+    "tr": "Robert Kolej Business Society: ekonomi, finans ve girişimcilik üzerine konuşmalar, öğrenci yazıları ve kulüp haberleri.",
+    "en": "Robert College Business Society: conversations on economics, finance and entrepreneurship, student writing and club news."
+  },
+  "linkedin": ""
+}

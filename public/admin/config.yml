@@ -1,0 +1,201 @@
+# Local: npm run dev + npm run admin, then /admin/.
+# For a hosted editor, replace repo and configure GitHub OAuth on your host.
+backend:
+  name: github
+  repo: KULLANICI_ADI/rcbs-website
+  branch: main
+local_backend: true
+locale: tr
+media_folder: public/uploads
+public_folder: /uploads
+publish: true
+editor:
+  preview: false
+
+collections:
+  - name: blog_tr
+    label: Blog yazıları (TR)
+    folder: src/content/magazine/tr
+    create: true
+    slug: "{{slug}}"
+    sortable_fields: [date, title]
+    fields: &article
+      - { label: Başlık, name: title, widget: string }
+      - { label: Yazar, name: author, widget: string }
+      - { label: Tarih, name: date, widget: datetime, date_format: YYYY-MM-DD, time_format: false, format: YYYY-MM-DD }
+      - { label: Kategori, name: category, widget: string }
+      - { label: Özet, name: excerpt, widget: text }
+      - { label: Kapak fotoğrafı, name: cover, widget: image, required: false }
+      - { label: Fotoğraf açıklaması (erişilebilirlik), name: coverAlt, widget: string, required: false }
+      - { label: Çeviri anahtarı, name: translationKey, widget: string, required: false, hint: "Aynı yazının TR ve EN sürümlerine aynı anahtarı verin." }
+      - { label: Taslak (sitede gösterilmez), name: draft, widget: boolean, default: false }
+      - { label: Yazı, name: body, widget: markdown }
+  - name: blog_en
+    label: Blog posts (EN)
+    folder: src/content/magazine/en
+    create: true
+    slug: "{{slug}}"
+    sortable_fields: [date, title]
+    fields: *article
+
+  - name: newsletter_tr
+    label: Newsletter sayıları (TR)
+    folder: src/content/newsletter/tr
+    create: true
+    slug: "{{slug}}"
+    sortable_fields: [date, title]
+    fields: &issue
+      - { label: Sayı başlığı, name: title, widget: string, hint: "Ör. 2026–2027 Birinci Dönem" }
+      - { label: Yayın tarihi, name: date, widget: datetime, date_format: YYYY-MM-DD, time_format: false, format: YYYY-MM-DD }
+      - { label: Açıklama, name: description, widget: text, required: false }
+      - { label: Newsletter PDF, name: file, widget: file, required: false, media_library: { config: { multiple: false } }, hint: "Yayımlamak için PDF yükleyin veya https:// bağlantısı girin. Taslakta boş bırakılabilir." }
+      - { label: Kapak fotoğrafı, name: cover, widget: image, required: false }
+      - { label: Kapak açıklaması, name: coverAlt, widget: string, required: false }
+      - { label: Taslak (sitede gösterilmez), name: draft, widget: boolean, default: false }
+  - name: newsletter_en
+    label: Newsletter issues (EN)
+    folder: src/content/newsletter/en
+    create: true
+    slug: "{{slug}}"
+    sortable_fields: [date, title]
+    fields: *issue
+
+  - name: pages
+    label: Sayfa metinleri ve fotoğrafları
+    files:
+      - name: home
+        label: Home / Ana sayfa
+        file: src/data/pages/home.json
+        fields:
+          - label: Türkçe
+            name: tr
+            widget: object
+            fields: &home
+              - { label: Menüdeki ad, name: title, widget: string }
+              - { label: Fotoğraf üzerinde kayan başlık, name: heroTitle, widget: string }
+              - { label: Kayan yazıyı durdur düğmesi açıklaması, name: motionPauseLabel, widget: string }
+              - { label: Kayan yazıyı oynat düğmesi açıklaması, name: motionPlayLabel, widget: string }
+              - { label: Ana sayfa toplu fotoğrafı, name: heroImage, widget: image, required: false, hint: "Boşsa kulüp logosu görünür. Öneri en az 1600 piksel genişliğinde yatay fotoğraf." }
+              - { label: Fotoğraf açıklaması, name: heroImageAlt, widget: string, required: false }
+              - { label: Fotoğrafın odak noktası, name: heroPosition, widget: select, options: [top, center, bottom], default: center }
+              - { label: Giriş üst başlığı, name: introLabel, widget: string }
+              - { label: Ana başlık, name: tagline, widget: string }
+              - { label: Giriş paragrafları, name: paragraphs, widget: list, field: { label: Paragraf, name: paragraph, widget: text } }
+              - { label: Buton metni, name: ctaLabel, widget: string }
+              - { label: Butonun açacağı sayfa, name: ctaLink, widget: select, options: [about, newsletter, blog, contact] }
+          - { label: English, name: en, widget: object, fields: *home }
+      - name: about
+        label: About / Hakkımızda
+        file: src/data/pages/about.json
+        fields:
+          - label: Türkçe
+            name: tr
+            widget: object
+            fields: &about
+              - { label: Sayfa ve menü adı, name: title, widget: string }
+              - { label: Sayfa ana başlığı, name: heading, widget: string }
+              - { label: Ana fotoğraf veya logo, name: image, widget: image, required: false }
+              - { label: Fotoğraf açıklaması, name: imageAlt, widget: string, required: false }
+              - { label: Giriş metni, name: intro, widget: text }
+              - { label: Hikaye başlığı, name: storyTitle, widget: string }
+              - { label: Hikaye, name: story, widget: text, hint: "Paragrafları boş satırla ayırın." }
+              - { label: Misyon başlığı, name: missionTitle, widget: string }
+              - { label: Misyon maddeleri, name: mission, widget: list }
+              - { label: Yönetim kurulu başlığı, name: boardTitle, widget: string }
+              - { label: Yönetim kurulu girişi, name: boardIntro, widget: text }
+              - { label: Fotoğraf albümü başlığı, name: galleryTitle, widget: string }
+              - label: Fotoğraf albümü
+                name: gallery
+                widget: list
+                required: false
+                fields:
+                  - { label: Fotoğraf, name: image, widget: image }
+                  - { label: Fotoğraf açıklaması, name: alt, widget: string }
+                  - { label: Alt yazı, name: caption, widget: string, required: false }
+          - { label: English, name: en, widget: object, fields: *about }
+      - name: newsletter
+        label: Newsletter sayfası
+        file: src/data/pages/newsletter.json
+        fields:
+          - label: Türkçe
+            name: tr
+            widget: object
+            fields: &newsletter
+              - { label: Sayfa ve menü adı, name: title, widget: string }
+              - { label: Sayfa ana başlığı, name: heading, widget: string }
+              - { label: Sayfa fotoğrafı, name: image, widget: image, required: false }
+              - { label: Fotoğraf açıklaması, name: imageAlt, widget: string, required: false }
+              - { label: Hitap, name: greeting, widget: string }
+              - { label: Giriş metni, name: intro, widget: text }
+              - { label: Arşiv açıklaması, name: archiveIntro, widget: text }
+              - { label: Henüz sayı yokken görünen metin, name: empty, widget: text }
+              - { label: PDF bağlantısı açıklaması, name: openLabel, widget: string }
+          - { label: English, name: en, widget: object, fields: *newsletter }
+      - name: blog
+        label: Blog sayfası
+        file: src/data/pages/blog.json
+        fields:
+          - label: Türkçe
+            name: tr
+            widget: object
+            fields: &blog
+              - { label: Sayfa ve menü adı, name: title, widget: string }
+              - { label: Sayfa ana başlığı, name: heading, widget: string }
+              - { label: Giriş metni, name: intro, widget: text }
+              - { label: Sayfa fotoğrafı, name: image, widget: image, required: false }
+              - { label: Fotoğraf açıklaması, name: imageAlt, widget: string, required: false }
+              - { label: Henüz yazı yokken görünen metin, name: empty, widget: text }
+              - { label: Tüm kategoriler filtresi, name: allLabel, widget: string }
+              - { label: Yazıdan geri dönüş bağlantısı, name: backLabel, widget: string }
+              - { label: Yazıyı oku bağlantısı, name: readMoreLabel, widget: string }
+          - { label: English, name: en, widget: object, fields: *blog }
+      - name: contact
+        label: Contact / İletişim
+        file: src/data/pages/contact.json
+        fields:
+          - label: Türkçe
+            name: tr
+            widget: object
+            fields: &contact
+              - { label: Sayfa ve menü adı, name: title, widget: string }
+              - { label: Sayfa ana başlığı, name: heading, widget: string }
+              - { label: Sayfa fotoğrafı, name: image, widget: image, required: false }
+              - { label: Fotoğraf açıklaması, name: imageAlt, widget: string, required: false }
+              - { label: İletişim başlığı, name: contactTitle, widget: string }
+              - { label: Giriş metni, name: intro, widget: text }
+              - { label: Adres etiketi, name: addressLabel, widget: string }
+              - { label: E-posta etiketi, name: emailLabel, widget: string }
+              - { label: Harita açıklaması, name: mapLabel, widget: string }
+              - { label: Haritada aç bağlantısı, name: mapLinkLabel, widget: string }
+          - { label: English, name: en, widget: object, fields: *contact }
+
+  - name: settings
+    label: Kulüp bilgileri ve logo
+    files:
+      - name: site
+        label: Genel bilgiler
+        file: src/data/site.json
+        fields:
+          - label: Kulüp adı
+            name: name
+            widget: object
+            fields: &bilingual
+              - { label: Türkçe, name: tr, widget: string }
+              - { label: English, name: en, widget: string }
+          - { label: Site açıklaması, name: description, widget: object, fields: *bilingual }
+          - { label: Logo, name: logo, widget: image }
+          - { label: Logoyu koyu zemin için beyaza çevir, name: invertLogo, widget: boolean, default: true, hint: "Renkli veya beyaz logo yüklerseniz kapatın." }
+          - { label: Kuruluş yılı, name: founded, widget: number }
+          - { label: E-posta, name: email, widget: string, required: false }
+          - { label: Instagram adresi, name: instagram, widget: string, required: false }
+          - { label: LinkedIn adresi, name: linkedin, widget: string, required: false }
+          - { label: Adres, name: address, widget: text }
+          - { label: Harita embed URL, name: mapEmbedUrl, widget: string, required: false, hint: "iframe kodunu değil, sadece https:// ile başlayan src adresini girin." }
+          - label: Yönetim kurulu
+            name: board
+            widget: list
+            required: false
+            fields:
+              - { label: Ad Soyad, name: name, widget: string }
+              - { label: Fotoğraf, name: photo, widget: image, required: false }
+              - { label: Görev, name: role, widget: object, fields: *bilingual }

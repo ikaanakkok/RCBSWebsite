@@ -1,0 +1,26 @@
+{
+  "tr": {
+    "title": "İletişim",
+    "heading": "Robert Kolej Business Society",
+    "image": "",
+    "imageAlt": "",
+    "contactTitle": "Bize ulaşın",
+    "intro": "Konuşmacı davetleri, iş birlikleri ya da blogumuza yazı göndermek için bizimle iletişime geçin.",
+    "addressLabel": "Adres",
+    "emailLabel": "E-posta",
+    "mapLabel": "Robert Kolej’in haritadaki konumu",
+    "mapLinkLabel": "Haritada aç"
+  },
+  "en": {
+    "title": "Contact",
+    "heading": "Robert College Business Society",
+    "image": "",
+    "imageAlt": "",
+    "contactTitle": "Get in touch",
+    "intro": "Get in touch about guest speakers, collaborations or contributing to our blog.",
+    "addressLabel": "Address",
+    "emailLabel": "Email",
+    "mapLabel": "Robert College location on the map",
+    "mapLinkLabel": "Open in maps"
+  }
+}

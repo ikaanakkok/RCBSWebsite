@@ -1,0 +1,39 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHeading from '../../components/PageHeading.astro';
+import SocialLinks from '../../components/SocialLinks.astro';
+import Icon from '../../components/Icon.astro';
+import { langPaths, type Lang } from '../../i18n/ui';
+import club from '../../data/site.json';
+import page from '../../data/pages/contact.json';
+export const getStaticPaths = langPaths;
+const lang = Astro.params.lang as Lang;
+const copy = page[lang];
+const mapLink = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(club.address)}`;
+---
+<Base lang={lang} title={copy.title} description={copy.intro}>
+  <PageHeading label={copy.title} heading={copy.heading} image={copy.image} imageAlt={copy.imageAlt} />
+  <section class="wrap contact-grid">
+    <div class="contact-copy">
+      <h2>{copy.contactTitle}</h2>
+      <p>{copy.intro}</p>
+      <p><span class="sr-only">{copy.addressLabel}: </span>{club.address}</p>
+      {club.email && <p><span class="sr-only">{copy.emailLabel}: </span><a href={`mailto:${club.email}`}>{club.email}</a></p>}
+      <SocialLinks />
+    </div>
+    <div class="contact-map">
+      {club.mapEmbedUrl && <iframe src={club.mapEmbedUrl} title={copy.mapLabel} width="760" height="350" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>}
+      <a class="map-link" href={mapLink} target="_blank" rel="noopener noreferrer"><Icon name="pin" />{copy.mapLinkLabel}</a>
+    </div>
+  </section>
+</Base>
+<style>
+  .contact-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 3rem; align-items: start; }
+  .contact-copy h2 { font-size: 1.5rem; margin: .3rem 0 1.25rem; }
+  .contact-copy p { margin-bottom: 1.5rem; }
+  .contact-copy :global(.social-links) { color: var(--accent); }
+  .contact-map iframe { display: block; border: 0; width: 100%; height: 350px; background: #ddd; }
+  .map-link { display: inline-flex; gap: .5rem; align-items: center; padding-top: .8rem; font-size: 1rem; }
+  .map-link :global(svg) { width: 18px; height: 18px; }
+  @media (max-width: 760px) { .contact-grid { grid-template-columns: 1fr; gap: 2rem; } }
+</style>

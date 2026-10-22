@@ -1,0 +1,44 @@
+{
+  "tr": {
+    "title": "Haftalık Piyasalar",
+    "kicker": "Her hafta",
+    "intro": "Her hafta bir araya gelip piyasalarda neler olduğunu konuşuyoruz.",
+    "formatTitle": "Bir oturum nasıl geçer?",
+    "format": [
+      {
+        "title": "Haftanın özeti",
+        "text": "Endeksler, döviz, emtia: haftanın önemli hareketleri."
+      },
+      {
+        "title": "Gündem",
+        "text": "Bir şirket, sektör ya da ekonomik veri üzerine kısa sunum."
+      },
+      {
+        "title": "Tartışma",
+        "text": "Herkes fikrini söyler: al, sat, bekle?"
+      }
+    ],
+    "topicsTitle": "Konuştuğumuz konulardan"
+  },
+  "en": {
+    "title": "Weekly Markets",
+    "kicker": "Every week",
+    "intro": "Every week we meet to talk about what is happening in the markets.",
+    "formatTitle": "What happens in a session?",
+    "format": [
+      {
+        "title": "Weekly recap",
+        "text": "Indices, currencies, commodities: the moves that mattered."
+      },
+      {
+        "title": "Deep dive",
+        "text": "A short talk on a company, sector or economic release."
+      },
+      {
+        "title": "Debate",
+        "text": "Everyone weighs in: buy, sell or hold?"
+      }
+    ],
+    "topicsTitle": "Topics we have covered"
+  }
+}
